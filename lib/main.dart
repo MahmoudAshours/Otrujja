@@ -22,8 +22,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  WebViewController webView;
+  var webView;
 
+//demo.teacher@midade.com
+//123456
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -35,9 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
             print("Hello");
             webView = controller;
           },
-          onPageStarted: (d) {
-            print('Here $d');
-          },
+          javascriptMode: JavascriptMode.unrestricted,
         ),
       ),
     );
@@ -77,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       );
       if (goBack) Navigator.pop(context); // If user press Yes pop the page
-        print(goBack);
+      print(goBack);
       return goBack;
     }
   }
