@@ -25,7 +25,10 @@ dependencies:
     sdk: flutter 
   flutter_native_splash: ^0.1.9
   webview_flutter: ^0.3.22+1
+  flutter_inappwebview: ^3.3.0+3
   flutter_launcher_icons: ^0.7.5
+  url_launcher: ^5.4.10
+  permission_handler: ^5.0.0+hotfix.8
 
 flutter_native_splash:
   image: assets/otruja.png

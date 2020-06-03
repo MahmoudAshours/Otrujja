@@ -1,8 +1,16 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Permission.microphone.request();
+  await Permission.camera.request();
   runApp(MyApp());
 }
 
@@ -31,13 +39,35 @@ class _MyHomePageState extends State<MyHomePage> {
     return WillPopScope(
       onWillPop: _onBack,
       child: Scaffold(
-        body: WebView(
+        body: InAppWebView(
           initialUrl: 'https://demo1.3lameni.com/ar',
           onWebViewCreated: (controller) async {
             print("Hello");
             webView = controller;
           },
-          javascriptMode: JavascriptMode.unrestricted,
+          onLoadStart: (InAppWebViewController controller, String url) {
+            print(url);
+          },
+          androidOnPermissionRequest: (InAppWebViewController controller,
+              String origin, List<String> resources) async {
+            print(origin);
+            print(resources);
+            if(await Permission.microphone.isGranted && await Permission.camera.isGranted)
+            return PermissionRequestResponse(
+              resources: resources,
+              action: PermissionRequestResponseAction.GRANT,
+            );
+            return PermissionRequestResponse(
+              resources: resources,
+              action: PermissionRequestResponseAction.DENY,
+            );
+          },
+          initialOptions: InAppWebViewGroupOptions(
+            crossPlatform: InAppWebViewOptions(
+              mediaPlaybackRequiresUserGesture: false,
+              debuggingEnabled: true,
+            ),
+          ),
         ),
       ),
     );
