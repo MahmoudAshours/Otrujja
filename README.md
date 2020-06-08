@@ -42,7 +42,7 @@ Al-utrujja
 
 - [x]  512px by 512px high res-icon .
 - [x] 1024px by 500px Feature graphic.
-- [x] [Promovideo] https://www.youtube.com/watch?v=BKHL4E0usHg
+- [x] [Promovideo](https://www.youtube.com/watch?v=BKHL4E0usHg)
 
 ## Category : 
 - Education.
