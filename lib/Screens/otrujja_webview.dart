@@ -12,31 +12,29 @@ class OtrujjaWebView extends StatefulWidget {
 
 class _OtrujjaWebViewState extends State<OtrujjaWebView> {
   final String _url = "https://demo1.3lameni.com/ar";
-  InAppWebViewController webView;
+  late InAppWebViewController webView;
   int _page = 1;
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: _onBack,
+      onWillPop: _onBack as Future<bool> Function()?,
       child: Scaffold(
         body: IndexedStack(
           index: _page,
           children: <Widget>[
             InAppWebView(
-              initialUrl: _url,
+              initialUrlRequest: URLRequest(url: Uri.parse(_url)),
               onWebViewCreated: (controller) async {
-                print("Hello");
                 webView = controller;
               },
-              onLoadStart: (InAppWebViewController controller, String url) {
-                if (url.contains('zoom')) {
-                  _launchURL(url);
+              onLoadResource:
+                  (InAppWebViewController controller, LoadedResource resource) {
+                if (resource.url.toString().contains('zoom')) {
+                  _launchURL(resource);
                 }
               },
-              onLoadStop: (InAppWebViewController controller, String url) {
-                setState(() {
-                  _page = 0;
-                });
+              onLoadStop: (InAppWebViewController controller, Uri? resource) {
+                setState(() => _page = 0);
               },
               androidOnPermissionRequest: (InAppWebViewController controller,
                   String origin, List<String> resources) async {
@@ -56,7 +54,6 @@ class _OtrujjaWebViewState extends State<OtrujjaWebView> {
               initialOptions: InAppWebViewGroupOptions(
                 crossPlatform: InAppWebViewOptions(
                   mediaPlaybackRequiresUserGesture: false,
-                  debuggingEnabled: true,
                 ),
               ),
             ),
@@ -83,8 +80,8 @@ class _OtrujjaWebViewState extends State<OtrujjaWebView> {
     );
   }
 
-  Future<bool> _onBack() async {
-    bool goBack;
+  Future<bool?> _onBack() async {
+    bool? goBack;
     // check webview can go back
     final _value = await webView.canGoBack();
     if (_value) {
@@ -102,7 +99,7 @@ class _OtrujjaWebViewState extends State<OtrujjaWebView> {
           ),
           // Do you want to go back?
           actions: <Widget>[
-            FlatButton(
+            ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pop(false);
                 setState(() => goBack = false);
@@ -112,7 +109,7 @@ class _OtrujjaWebViewState extends State<OtrujjaWebView> {
                 style: _textStyle(),
               ),
             ),
-            FlatButton(
+            ElevatedButton(
               onPressed: () {
                 SystemNavigator.pop();
                 setState(() => goBack = true);
@@ -125,7 +122,7 @@ class _OtrujjaWebViewState extends State<OtrujjaWebView> {
           ],
         ),
       );
-      if (goBack) Navigator.pop(context); // If user press Yes pop the page
+      if (goBack!) Navigator.pop(context); // If user press Yes pop the page
 
       return goBack;
     }
