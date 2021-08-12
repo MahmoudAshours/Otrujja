@@ -157,7 +157,6 @@ class _OtrujjaQuizState extends State<OtrujjaQuiz> {
   }
 
   _checkAnswer(String answer, int? answerIndex) {
-    print(answerIndex);
     if (answerIndex != null) {
       if (widget.quiz[_questionNumber]['correct_answer']
               .toString()
