@@ -64,7 +64,7 @@ class _OtrujjaWebViewState extends State<OtrujjaWebView> {
     );
   }
 
-  _launchURL(url) async {
+  Future _launchURL(url) async {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -123,7 +123,7 @@ class _OtrujjaWebViewState extends State<OtrujjaWebView> {
           ],
         ),
       );
-      if (goBack!) Navigator.pop(context); // If user press Yes pop the page
+      if (goBack!) Navigator.pop(context);
 
       return goBack!;
     }
